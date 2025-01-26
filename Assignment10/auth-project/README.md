@@ -26,3 +26,4 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 -   Installed shadcn-ui (npx shadcn@latest init)
 -   npx shadcn@latest add input label button card dropdown-menu table
 -   npm i @tabler/icons-react
+-   npm install next-auth@beta
