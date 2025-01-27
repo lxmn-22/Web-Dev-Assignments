@@ -1,4 +1,5 @@
 import Counter from "./components/Counter";
+import Meals from "./components/Meals";
 import Todo from "./components/Todo";
 
 function App() {
@@ -8,8 +9,9 @@ function App() {
 				<h1 className="text-3xl font-semibold">
 					Hello, React + TS Beginner projects
 				</h1>
-				<Counter />
-				<Todo />
+				{/* <Counter /> */}
+				{/* <Todo /> */}
+				<Meals />
 			</div>
 		</>
 	);
