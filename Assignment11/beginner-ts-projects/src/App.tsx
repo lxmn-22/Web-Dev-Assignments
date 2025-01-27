@@ -9,8 +9,8 @@ function App() {
 				<h1 className="text-3xl font-semibold">
 					Hello, React + TS Beginner projects
 				</h1>
-				{/* <Counter /> */}
-				{/* <Todo /> */}
+				<Counter />
+				<Todo />
 				<Meals />
 			</div>
 		</>
