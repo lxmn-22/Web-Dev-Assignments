@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { assets } from "../assets/assets";
 import { FaCamera } from "react-icons/fa";
+import Tabs from "./Tabs";
 
 const Profile = () => {
 	const [bannerUrl, setBannerUrl] = useState(assets.banner);
@@ -24,6 +25,7 @@ const Profile = () => {
 
 	return (
 		<div className="relative w-[95%] ml-[5rem]">
+			{/* Channel Banner */}
 			<div className="relative">
 				<img
 					className="w-full h-60 object-cover"
@@ -63,7 +65,19 @@ const Profile = () => {
 						onChange={handleProfileChange}
 					/>
 				</button>
+
+				{/* Channel Details */}
+				<div className="ml-4 mt-4">
+					<h1 className="text-2xl font-bold">Laxman Singh Koranga</h1>
+					<p className="">100K views</p>
+					<p className="mt-2">An Aspiring Web Developer</p>
+					<button className="mt-4 bg-red-600 text-white font-semibold py-2 px-4 rounded hover:bg-red-500">
+						Subscribe
+					</button>
+				</div>
 			</div>
+
+			<Tabs />
 		</div>
 	);
 };
