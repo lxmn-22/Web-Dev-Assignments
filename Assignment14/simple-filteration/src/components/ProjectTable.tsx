@@ -1,16 +1,18 @@
-import React, { useState } from "react";
-import { AiOutlineDown } from "react-icons/ai";
+import { useState } from "react";
+import { BsThreeDots } from "react-icons/bs";
 import { BiSort } from "react-icons/bi";
 import { MdSort } from "react-icons/md";
+import { AiOutlineDown } from "react-icons/ai";
 import { data } from "../utils/data";
-import { BsThreeDots } from "react-icons/bs";
 
 const ProjectTable = () => {
 	const [projects, setProjects] = useState(data);
+
 	const [sortConfig, setSortConfig] = useState<{
 		key: string;
 		direction: string;
 	} | null>(null);
+
 	const [dropdownVisible, setDropdownVisible] = useState(false);
 	const [filtersVisible, setFiltersVisible] = useState(false);
 	const [searchQuery, setSearchQuery] = useState("");
@@ -25,8 +27,10 @@ const ProjectTable = () => {
 		number | null
 	>(null);
 
+	// Function: project sorting
 	const sortProjects = (key: string) => {
-		let sortedProjects = [...projects];
+		const sortedProjects = [...projects];
+
 		if (
 			sortConfig &&
 			sortConfig.key === key &&
@@ -47,9 +51,13 @@ const ProjectTable = () => {
 	};
 
 	const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setFilters({ ...filters, [e.target.name]: e.target.value });
+		setFilters({
+			...filters,
+			[e.target.name]: e.target.value,
+		});
 	};
 
+	// Function: Project status
 	const handleStatusChange = (index: number, newStatus: string) => {
 		const updatedProjects = projects.map((project, i) =>
 			i === index
@@ -67,6 +75,7 @@ const ProjectTable = () => {
 		setStatusDropdownVisible(null);
 	};
 
+	// Filter function Logic:
 	const filteredProjects = projects.filter(
 		(project) =>
 			(searchQuery === "" ||
@@ -97,7 +106,7 @@ const ProjectTable = () => {
 
 	// Calculate paginated data:
 	const [currentPage, setCurrentPage] = useState(1);
-	const itemsPerPage = 5;
+	const itemsPerPage = 10;
 	const startIndex = (currentPage - 1) * itemsPerPage;
 	const currentProjects = filteredProjects.slice(
 		startIndex,
@@ -107,29 +116,135 @@ const ProjectTable = () => {
 	const handlePageChange = (pageNumber: number) => setCurrentPage(pageNumber);
 
 	return (
-		<div className="w-[93%] ml-[5rem]">
+		<div className="p-4 w-[93%] ml-[5rem]">
 			{/* Sorting */}
 			<div className="flex items-center mb-5">
 				<div className="relative">
-					<button className="flex items-center justify-center border border-gray-700 text-white p-2 rounded">
+					<button
+						onClick={() => setDropdownVisible(!dropdownVisible)}
+						className="border border-gray-700 flex items-center justify-center text-white p-2 cursor-pointer"
+					>
 						<BiSort className="mr-[0.3rem]" />
 						Sort
 						<AiOutlineDown className="ml-2" />
 					</button>
+					{dropdownVisible && (
+						<div className="absolute top-full left-0 mt-2 bg-gray-800 border border-gray-700 shadow-lg">
+							{/* Sorting by Name */}
+							<button
+								onClick={() => handleSortOptionClick("client")}
+								className="block px-4 py-2 text-white w-full hover:bg-gray-700"
+							>
+								Name
+							</button>
+
+							{/* Sorting by Country */}
+							<button
+								onClick={() => handleSortOptionClick("country")}
+								className="block px-4 py-2 text-white hover:bg-gray-700"
+							>
+								Country
+							</button>
+
+							{/* Sorting by Date */}
+							<button
+								onClick={() => handleSortOptionClick("date")}
+								className="block px-4 py-2 text-white  w-full hover:bg-gray-700"
+							>
+								Date
+							</button>
+						</div>
+					)}
+				</div>
+
+				{/* Filters */}
+				<div className="relative ml-4 w-full">
+					<button
+						onClick={() => setFiltersVisible(!filtersVisible)}
+						className="border border-gray-700 flex items-center justify-center text-white p-2 cursor-pointer"
+					>
+						<MdSort className="mr-[0.3rem]" />
+						Filters
+						<AiOutlineDown className="ml-2" />
+					</button>
+					{filtersVisible && (
+						<div className="absolute top-full left-0 mt-2 bg-gray-800 border border-gray-700 shadow-lg p-4">
+							{/* Filter By Name */}
+							<div className="mb-2">
+								<label className="block text-white">
+									Filter by Name:
+								</label>
+								<input
+									type="text"
+									name="name"
+									value={filters.name}
+									onChange={handleFilterChange}
+									className="bg-gray-900 text-white p-2 w-full"
+								/>
+							</div>
+
+							{/* Filter by Country */}
+							<div className="mb-2">
+								<label className="block text-white">
+									Filter by Country:
+								</label>
+								<input
+									type="text"
+									name="country"
+									value={filters.country}
+									onChange={handleFilterChange}
+									className="bg-gray-900 text-white p-2 w-full"
+								/>
+							</div>
+
+							{/* Filter by Email */}
+							<div className="mb-2">
+								<label className="block text-white">
+									Filter by Email:
+								</label>
+								<input
+									type="text"
+									name="email"
+									value={filters.email}
+									onChange={handleFilterChange}
+									className="bg-gray-900 text-white p-2 w-full"
+								/>
+							</div>
+
+							{/* Filter by Project */}
+							<div className="mb-2">
+								<label className="block text-white">
+									Filter by Project:
+								</label>
+								<input
+									type="text"
+									name="project"
+									value={filters.project}
+									onChange={handleFilterChange}
+									className="bg-gray-900 text-white p-2 w-full"
+								/>
+							</div>
+
+							{/* Filter by Status */}
+							<div className="mb-2">
+								<label className="block text-white">
+									Filter by Status:
+								</label>
+								<input
+									type="text"
+									name="status"
+									value={filters.status}
+									onChange={handleFilterChange}
+									className="bg-gray-900 text-white p-2 w-full"
+								/>
+							</div>
+						</div>
+					)}
 				</div>
 			</div>
 
-			{/* Filters */}
-			<div className="w-full relative ml-4">
-				<button className="flex items-center justify-center border border-gray-700 text-white p-2 rounded">
-					<MdSort className="mr-[0.3rem]" />
-					Filters
-					<AiOutlineDown className="ml-2" />
-				</button>
-			</div>
-
 			{/* Main Table */}
-			<table className="min-w-full table-auto rounded boder border-gray-700 text-white">
+			<table className="min-w-full table-auto rounded border border-gray-700 text-white">
 				<thead>
 					<tr>
 						<th className="px-5 py-3 text-left">Image</th>
@@ -146,18 +261,22 @@ const ProjectTable = () => {
 				<tbody>
 					{currentProjects.map((project, index) => (
 						<tr key={index} className="border border-gray-700">
+							{/* Client Profile Image */}
 							<td className="px-4 py-2">
 								<img
+									src={project.image}
+									alt={project.client}
 									className="w-[3rem] h-[3rem] object-cover rounded-full"
-									src="{project.image} alt={project.client}"
 								/>
 							</td>
+
+							{/* Client Name, Country, Email, Project-name */}
 							<td className="px-4 py-2">{project.client}</td>
 							<td className="px-4 py-2">{project.country}</td>
 							<td className="px-4 py-2">{project.email}</td>
 							<td className="px-4 py-2">{project.project}</td>
 
-							{/* Task Progress */}
+							{/* Project Task Progress */}
 							<td className="px-4 py-2">
 								<div className="w-24 h-2 bg-gray-700 rounded">
 									<div
@@ -171,11 +290,16 @@ const ProjectTable = () => {
 										project.status === "Completed"
 											? "green"
 											: "yellow"
-									}-500 p-2 rounded`}
+									}-600 p-2`}
 								>
 									{project.status}
 								</span>
 							</td>
+
+							{/* Project Date */}
+							<td className="px-4 py-2">{project.date}</td>
+
+							{/* Project Action */}
 							<td className="px-4 py-2">
 								<div className="relative">
 									<BsThreeDots
@@ -186,10 +310,26 @@ const ProjectTable = () => {
 									/>
 									{statusDropdownVisible === index && (
 										<div className="absolute top-full right-0 mt-2 bg-gray-800 border border-gray-700 rounded shadow-lg">
-											<button className="block w-full px-4 py-2 text-white hover:bg-gray-700 text-left">
+											<button
+												onClick={() =>
+													handleStatusChange(
+														index,
+														"In Progress"
+													)
+												}
+												className="block px-4 py-2 text-white hover:bg-gray-700 w-full text-left"
+											>
 												In Progress
 											</button>
-											<button className="block w-full px-4 py-2 text-white hover:bg-gray-700 text-left">
+											<button
+												onClick={() =>
+													handleStatusChange(
+														index,
+														"Completed"
+													)
+												}
+												className="block px-4 py-2 text-white hover:bg-gray-700 w-full text-left"
+											>
 												Completed
 											</button>
 										</div>
@@ -202,12 +342,27 @@ const ProjectTable = () => {
 			</table>
 
 			{/* Pagination */}
-			<div className="flex justify-center mt-4">
-				<button className="px-4 py-2 bg-gray-700 text-white rounded mr-2 disabled:opacity-50">
+			<div className="flex justify-end mt-4">
+				{/* Previous Button */}
+				<button
+					disabled={currentPage === 1}
+					onClick={() => handlePageChange(currentPage - 1)}
+					className="px-4 py-2 bg-gray-700 hover:bg-gray-600 hover:font-semibold text-white mr-2 disabled:opacity-50"
+				>
 					Previous
 				</button>
-				<span className="px-4 py-2 text-white">Page</span>
-				<button className="px-4 py-2 bg-gray-700 text-white rounded mr-2 disabled:opacity-50">
+
+				{/* Page Numbers */}
+				<span className="px-4 py-2 text-white font-semibold">
+					{currentPage} / {totalPages}
+				</span>
+
+				{/* Next Button */}
+				<button
+					disabled={currentPage === totalPages}
+					onClick={() => handlePageChange(currentPage + 1)}
+					className="px-4 py-2 bg-gray-700 hover:bg-gray-600 hover:font-semibold text-white ml-2 disabled:opacity-50"
+				>
 					Next
 				</button>
 			</div>
