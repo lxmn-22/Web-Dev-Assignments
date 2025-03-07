@@ -34,7 +34,7 @@ const ProductPage: React.FC = () => {
 	}
 
 	return (
-		<div className="w-[60%] p-5">
+		<div className="xl:w-[73%] p-5">
 			<button
 				onClick={() => navigate(-1)}
 				className="mb-5 px-4 py-2 bg-black text-white"
@@ -44,12 +44,12 @@ const ProductPage: React.FC = () => {
 			<img
 				src={product.images[0]}
 				alt={product.title}
-				className="w-[50%] h-auto mb-5"
+				className="w-[40%] h-auto mb-5"
 			/>
 			<h1 className="text-2xl mb-4 font-bold">{product.title}</h1>
-			<p className="w-[70%] mb-4 text-gray-700">{product.description}</p>
+			<p className="w-[100%] mb-4 text-gray-700">{product.description}</p>
 			<div className="flex">
-				<p>Price: {product.price}</p>
+				<p>Price: ₹{product.price * 87}</p>
 				<p className="ml-10">Rating: {product.rating}</p>
 			</div>
 		</div>
